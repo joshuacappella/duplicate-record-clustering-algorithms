@@ -1,5 +1,5 @@
 
-# Duplicate_Record_Clustering_Algorithms
+# duplicate-Record_clustering-algorithms
 
 > Research for removing duplicate entries in Kardia
 
