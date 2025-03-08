@@ -7,6 +7,7 @@
 ## Project Description
 
 The goal of this project was to find duplicate entries in Kardia's database after the duplicate entries have already been made in less complexity than O(n<sup>2</sup>) time.
+Make sure to check the Wiki tab on this repo for further documentation.
 
 
 ## Project Features
