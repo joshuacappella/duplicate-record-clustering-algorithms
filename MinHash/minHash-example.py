@@ -7,7 +7,7 @@ THRESHOLD=0.4
 
 # Load sample list of near-duplicate strings
 rows = []
-with open("./sample-data/p_partner_dup_test.csv") as csvfile:
+with open("./sample-data/test.csv") as csvfile:
     csvreader = csv.reader(csvfile, delimiter='\t')
     rows = [r for r in csvreader]
 
@@ -58,6 +58,8 @@ for i, cluster in enumerate(clusters):
             print(item[0], end=", ")
         print(len(cluster))
         csvData.append([len(cluster)])
+
+print(len(clusters))
 
 # output data to be easily read from excel to see how the algorithm did
 with open("sample-data/test-out.csv", "w", newline='') as csvfile:
