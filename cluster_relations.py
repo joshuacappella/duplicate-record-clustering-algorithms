@@ -4,7 +4,7 @@
     # multiple clusters of [multiple algorithm's property dictionaries]
     # The ChatGPT prompt that suggested this comparison method was
     # (we think) partially inspired by something made in the 2000s
-    # called the [H]ighly-[C]onnected [S]ubgraphs Clustering Algorithm.
+    #called the [H]ighly-[C]onnected [S]ubgraphs Clustering Algorithm.
     # We do not actually follow that algorithm. We came up with
     # portions of this based on the needs of our problem and it
     # doesn't form a graph at the end. The HCS Clustering Algorithm
