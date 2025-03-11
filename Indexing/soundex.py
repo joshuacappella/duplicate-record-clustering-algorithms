@@ -1,3 +1,12 @@
+''' ----------------------------------------------------------------------------------
+* FILE: soundex.py
+* AUTHOR: Benjamin Small, Tim Hewale
+* DATE: 3/11/2025
+* PURPOSE: Implementation of the ability to sort the indexes of the p_partner table 
+* based on a soundexed value. Ex. Sort the p_partner table based on soundex of the 
+* given name.
+---------------------------------------------------------------------------------- '''
+
 import mariadb
 import sys
 
@@ -19,7 +28,7 @@ mycursor.execute("use Kardia_DB;")
 
 # CREATE SOUNDEX for TABLE VALUES ----------------------------------------------------
 
-# The following function does four actions:
+# The following function, get_soundex(cursor, table, value), does four actions:
 # Create a table to store the value, soundex of the value, and the {table}_key.
 # Insert all the entries from the table into the new table.
 # Create an index on the soundexed value.
@@ -31,11 +40,24 @@ mycursor.execute("use Kardia_DB;")
 # Then the table value that you would like to compute the soundex on.
 #
 # The returned output is a list of [<id>, <value>, <soundexed_value>]
+# 
+# NOTES:
+# The following program will only work for tables where the primary key is a CHAR(10)
+# value, and is named <table-name>_key. It will also only work for values that are of
+# type VARCHAR(64).
+
 def get_soundex(cursor, table, value):
+  # create the name for the testing table (CAREFUL TO MAKE SURE THIS IS DIFFERENT 
+  # THAN EXISTING TABLE NAMES)
   temp_table = f"{table}_soundex_test"
 
+  # Destroy the table if in already exists : this could cause errors if there is 
+  # a table in truly in use with the same name. 
   cursor.execute(f"""DROP TABLE IF EXISTS {temp_table};""")
 
+  # CREATE THE TABLE in the MariaDB.
+  # We want to do this to utilize the databases incorporated indexing and sorting 
+  # feature.
   cursor.execute(f"""
   CREATE TABLE IF NOT EXISTS {temp_table} (
     `index` CHAR(10) PRIMARY KEY,
@@ -45,6 +67,8 @@ def get_soundex(cursor, table, value):
   );
   """)
 
+  # Inserts the table data selected into the new table. This includes the soundex of
+  # the value.
   cursor.execute(f"""             
   INSERT INTO {temp_table} (`index`, {value}, soundex)
   SELECT 
@@ -55,18 +79,20 @@ def get_soundex(cursor, table, value):
     {table};
   """)
   
-  cursor.execute(f"""CREATE INDEX phonex_index ON {temp_table}(soundex);""")
+  # Possible feature to create an index on the soundex within the table. 
+  # Not selected currently since table is removed after use. 
+  # cursor.execute(f"""CREATE INDEX soundex_index ON {temp_table}(soundex);""")
 
+  # Order and save the output by the ascending soundex.
   cursor.execute(f"""SELECT * FROM {temp_table} ORDER BY soundex;""")
-
   data = cursor.fetchall()
 
+  # Deletes the table then returns the data.
   cursor.execute(f"""DROP TABLE IF EXISTS {temp_table};""")
-
   return data
 
 
-# test query to grab 
+# test query to grab perferred name from the p_partner table. 
 items = get_soundex(mycursor, "p_partner", "p_preferred_name")
 for x in items:
   print(x)
