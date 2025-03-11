@@ -1,11 +1,14 @@
 import mariadb
 import sys
 
-# ESTABLISHING CONNECTION --------------------------------------------------------------
-
 # Establish connection to MariaDB server
-# NEED TO RUN:  ssh -L 3306:localhost:3306  devel@10.5.193.178
-# This creates the connection from the server for the python script to connect to.
+
+# When running this script on a local machine, you need to port forward the
+# database to your local machine. You can do this using the VSCode ports menu
+# if you have an open SSH menu, or by running the command below:
+# Database Port Forwarding:  ssh -L 3306:localhost:3306  devel@10.5.193.178
+
+# Create a connection to the database.
 try:
   conn = mariadb.connect(
     host="127.0.0.1",
@@ -16,46 +19,27 @@ except mariadb.Error as e:
   print(f"Error connecting to the database: {e}")
   sys.exit(1)
 
-# Create cursor: way to send commands to the database
+# Create a database cursor.
 mycursor = conn.cursor()
 
 # Switch to the Database used for connections
 mycursor.execute("use Kardia_DB;")
 
-
-# INDEXING SECTION ---------------------------------------------------------------------
-
-# Use the mysql SHOW TABLES command and print output
+# Get all tables.
 mycursor.execute("Show tables;")
-myresult = mycursor.fetchall()
-for x in myresult:
-  print(x)
+
+# Print all results.
+for result in mycursor.fetchall():
+  print(result)
 
 
 print("\n")
 
-# Use the mysql command to grab a single user and print output
+# Run a simple query.
 mycursor.execute("SELECT * FROM p_partner WHERE p_partner_key = \"86869\";")
-myresult = mycursor.fetchall()
-for x in myresult:
+
+for x in mycursor.fetchall():
   print(x)
 
-
-print("\n")
-
-# Use the mysql command to grab the names and print output
-mycursor.execute("desc p_partner;")
-myresult = mycursor.fetchall()
-for x in myresult:
-  print(x)
-
-
-# Grab a list of names
-contacts = []
-mycursor.execute("SELECT p_partner_key, p_given_name, p_surname FROM p_partner;")
-for (key, name, surname) in mycursor:
-  contacts.append(f"{key} {name} <{surname}>")
-print("\n".join(contacts))
-
-
+# Close the connection.
 conn.close()
