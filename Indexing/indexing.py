@@ -3,7 +3,7 @@ import sys
 
 # ESTABLISHING CONNECTION --------------------------------------------------------------
 
-#Establish connection to MariaDB server
+# Establish connection to MariaDB server
 # NEED TO RUN:  ssh -L 3306:localhost:3306  devel@10.5.193.178
 # This creates the connection from the server for the python script to connect to.
 try:
