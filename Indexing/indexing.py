@@ -1,5 +1,6 @@
 import mariadb
 import sys
+from tabulate import tabulate
 
 # Establish connection to MariaDB server
 
@@ -36,10 +37,22 @@ for result in mycursor.fetchall():
 print("\n")
 
 # Run a simple query.
-mycursor.execute("SELECT * FROM p_partner WHERE p_partner_key = \"86869\";")
+mycursor.execute(f"""
+SELECT {",".join(attributes)}
+FROM p_partner
+JOIN p_location     ON p_partner.p_partner_key = p_location.p_partner_key
+JOIN p_contact_info ON p_partner.p_partner_key = p_contact_info.p_partner_key
+WHERE p_partner.p_partner_key = 80965;
+""")
 
-for x in mycursor.fetchall():
-  print(x)
+rows = []
+for data in mycursor.fetchall():
+  columns = []
+  for entry in data:
+    columns.append(entry)
+  rows.append(columns)
+
+print(tabulate(rows, headers=labels, tablefmt="grid"))
 
 # Close the connection.
 conn.close()
