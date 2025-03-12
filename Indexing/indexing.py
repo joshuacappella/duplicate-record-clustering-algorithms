@@ -30,11 +30,11 @@ mycursor = conn.cursor()
 mycursor.execute("use Kardia_DB;")
 
 #make vectors out of a hashed value from the phone number
-def phone_number_to_hashed_vector(phone, matrix_shape=(16,1)):
+def phone_number_to_hashed_vector(phone, matrix_shape=(32,1)):
     hashed_number = hashlib.sha256(phone.encode()).hexdigest()
-    numerical_hash = int(hashed_number, 16)
+    numerical_hash = int(hashed_number, 32)
     total_elements = matrix_shape[0] * matrix_shape[1]
-    matrix_values = [(numerical_hash >> i) & 1 for i in range(16)]
+    matrix_values = [(numerical_hash >> i) & 1 for i in range(32)]
     matrix = np.array(matrix_values)
     return matrix
 
@@ -94,8 +94,8 @@ for data in mycursor.fetchall():
 
 rows = sorted(rows, key=lambda x: (x[2][0], x[2][1], x[2][2], x[2][3], x[2][4], x[2][5], x[2][6]))
 
-for x in list(range(5)):
-   print(f"{rows[x]} \n")
+for x in rows:
+   print(f"{x} \n")
 
 #print(tabulate(rows, headers=labels, tablefmt="grid"))
 
