@@ -15,12 +15,28 @@ For every record, we could go through each relevant attribute and cosine compare
 ## Current Solution
 The current solution sorts each relevant attribute (optimized with an index). Then, for each entry, it compares that entry to the next few entries (usually 10). This solution is far faster, however, it misses many duplocates. For example, "John" and "JJohn" (an obvious typo) will sort far appart, and this duplocate will not be detected.
 
+
+## Solutions that Have been Attempted and Deadended
+   In our attempts to find efficient clustering and/or sorting algorithms, we have tried and failed the following approaches:
+ - The previous teams solution, using MinHash and Clusters based on a particular Python library. We decided this approach was too poorly documented to be built off of and could be done better.
+ - Simple vector sorting: Due to the impossibility of properly sorting vectors by elements within the vector, since no one element is *seemingly* more important than another. Thus, the concept of sorting by vector elements and keeping the sliding window approach is unfeasible.
+
+## Sliding Window
+   The sliding window is essentially the way that the cosine algorithm checks for duplicates. The concept will continue to be used for this step of duplicate checking. The sliding window checks a number of sorted records below it for each record (e.g. a window of 50 records) by using the cosine algorithm and presents it as a duplicate if the cosine value is close enough to 1.0 (identical)
+
 ## Proposed Solution
-Our proposed solution (the "vector" solution) selects the the relevant attributes and computes the hashed vector for each of them individually. Then, we store these hashed vectors in a new table (see below).
+Our proposed solution has two parts that we would like to ideally combine, applying one of these functions to each attribute we desire to check. 
+   1. One computes the hashed vector for each of them individually, in the same way that it is done to check the cosine value in the sliding window technique listed above. Then, we store these hashed vectors in a new table (see below)
+   This approach is more helpful for the following types of duplicates:
+         - Duplicates where names are different but phone numbers could be the same
+         - Where the emails are the same or similar but the last name changed (marriage)
+         -   Others where typical names are very unalike
 
+2. The other would take in a string (perhaps, `p_given_name` or `p_preferred_name`) and compute a metaphone or `SOUNDEX` value to try to find strings that sound similar. This method will be better at clustering duplicates that have:
+   - misspelled name errors, which could be harder for cosine to find
+   - other minor character differences
+   - Metaphone also does well with differences such as "john" and "ajohn", as it can start with different letters but be sorted similarly based on the pronounciation of the rest of the word.
 
-| p_key | README |
-| ------ | ------ |
 
 ## Relevant Attributes
 We chose to examine each person's first name, last name (surname), address, email, and phone number.

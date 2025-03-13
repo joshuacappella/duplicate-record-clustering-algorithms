@@ -29,7 +29,7 @@ except mariadb.Error as e:
 mycursor = conn.cursor()
 mycursor.execute("use Kardia_DB;")
 
-#make vectors out of a hashed value from the phone number
+#make vectors out of a hashed value from the phone number (try printing some of these values for best debugging/learning purposes)
 def phone_number_to_hashed_vector(phone, matrix_shape=(32,1)):
     hashed_number = hashlib.sha256(phone.encode()).hexdigest()
     numerical_hash = int(hashed_number, 32)
