@@ -32,7 +32,7 @@ The current solution sorts each relevant attribute (optimized with an index). Th
 
 ## Proposed Solution
 Our proposed solution has two parts that we would like to ideally combine, applying one of these functions to each attribute we desire to check. 
-   1. The file in the GitHub titled `kmeans.c` is our first proposed clustering solution coded in C. It utilizes functionality implemented by the current cosine checking solution within the sliding window of vectors. The way this is improved is by using the K-means clustering algorithm to create centroids and vector points on a graph and cluster them based on which centroid point has the smallest distance from the point. Although not tested on values, an approach of this nature could be *more* helpful for the following types of duplicates:
+   1. The file in the GitHub titled **[kmeans.c](ttps://github.com/Lightning11wins/duplicate-record-clustering-algorithms/tree/main/kmeans.c)** is our first proposed clustering solution coded in C. It utilizes functionality implemented by the current cosine checking solution within the sliding window of vectors. The way this is improved is by using the K-means clustering algorithm to create centroids and vector points on a graph and cluster them based on which centroid point has the smallest distance from the point. Although not tested on values, an approach of this nature could be *more* helpful for the following types of duplicates:
          - Duplicates where names are different but phone numbers could be the same
          - Where the emails are the same or similar but the last name changed (marriage)
          -   Others where typical names are very unalike
