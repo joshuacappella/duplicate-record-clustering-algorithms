@@ -12,6 +12,7 @@ import mariadb      # Library for connecting to and modifying a MariaDB database
 import sys          # Library for sending accurate error codes.
 from metaphone import doublemetaphone
 
+
 # CONNECTION TO THE MARIADB on KARDIA-VM ---------------------------------------------
 try:
   # Assumes that a connection is available to the server on local port 3306
@@ -28,7 +29,7 @@ mycursor.execute("use Kardia_DB;")
 
 
 
-# CREATE METAPHONE for TABLE VALUES ----------------------------------------------------
+# CREATE METAPHONE for TABLE VALUES --------------------------------------------------
 
 # The following function, get_metaphone(cursor, table, value), does four actions:
 # Create a table to store the value, metaphone of the value, and the {table}_key.
@@ -69,8 +70,39 @@ def get_metaphone(cursor, table, value):
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
   """)
 
-  # Inserts the table data selected into the new table. This includes the metaphone of
-  # the value.
+  # Inserts the table data selected into the new table. This includes the metaphone 
+  # of the value. 
+  '''
+  # THE FOLLOWING SECTION TRIED TO IMPLEMENT THIS BY GRABBING ONE ROW FROM TABLE
+  # INSERTING THE METAPHONE, THEN MOVING TO NEXT ROW.
+
+  cursor.execute(f"""
+    SELECT {table}_key 
+    FROM {table} 
+    WHERE {value} != '' 
+    ORDER BY {table}_key;
+  """)
+  primary_keys = cursor.fetchall()
+
+  for (primary_key,) in primary_keys :
+    data_cursor = conn.cursor()
+    data_cursor.execute(f"""
+      SELECT {value} 
+      FROM {table} 
+      WHERE {table}_key = {primary_key};
+    """)
+    
+    og_value = data_cursor.fetchall()
+    og_value = og_value[0][0]
+    dm_value = doublemetaphone(og_value)[0]
+
+    cursor.execute(f"""
+    INSERT INTO {temp_table} (`index`, {value}, metaphone)
+    VALUES ({primary_key}, '{og_value}', '{dm_value}');
+    """)
+  '''
+
+  # THE FOLLOWING SECTION TAKES ALL DATA FROM TABLE THEN INPUTS LINE BY LINE INTO TABLE
 
   cursor.execute(f"""SELECT {table}_key, {value} FROM {table} WHERE {value} != '';""")
   data = mycursor.fetchall()
@@ -82,8 +114,8 @@ def get_metaphone(cursor, table, value):
     cursor.execute(f"""
     INSERT INTO {temp_table} (`index`, {value}, metaphone)
     VALUES ({primary_key}, '{og_value}', '{dm_value}');
-    """)
-
+    """) 
+  
   
   # Possible feature to create an index on the metaphone within the table. 
   # Not selected currently since table is removed after use. 
@@ -94,14 +126,15 @@ def get_metaphone(cursor, table, value):
   data = cursor.fetchall()
 
   # Deletes the table then returns the data.
-  cursor.execute(f"""DROP TABLE IF EXISTS {temp_table};""")
+  # cursor.execute(f"""DROP TABLE IF EXISTS {temp_table};""")
+  conn.commit()
   return data
 
 
 # test query to grab perferred name from the p_partner table. 
 items = get_metaphone(mycursor, "p_partner", "p_preferred_name")
 for x in items:
-  print(x)
+ print(x)
 
 
 # CLOSE CONNECTION TO SERVER ---------------------------------------------------------
