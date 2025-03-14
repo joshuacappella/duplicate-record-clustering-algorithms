@@ -10,7 +10,7 @@
 We need to efficently detect possible duplocates which can be presented to the user for resolution. The cosine similarity algorithm is great for determining when two peices of text are similar.
 
 ## Naive, Ideal Solution
-For every record, we could go through each relevant attribute and cosine compare it to every other record to detect similar records which may be duplocates. While this solution *will* find each duplocate, it's very slow on a large amount of data (think milions of entries) because it has O(n<sup>2</sup>) complexity.
+For every record, we could go through each relevant attribute and cosine compare it to every other record to detect similar records which may be duplocates. While this solution *will* find each duplicate, it's very slow on a large amount of data (think milions of entries) because it has O(n<sup>2</sup>) complexity.
 
 ## Current Solution
 The current solution sorts each relevant attribute (optimized with an index). Then, for each entry, it compares that entry to the next few entries (usually 10). This solution is far faster, however, it misses many duplocates. For example, "John" and "JJohn" (an obvious typo) will sort far appart, and this duplocate will not be detected.
