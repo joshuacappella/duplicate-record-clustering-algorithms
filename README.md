@@ -45,7 +45,7 @@ Our proposed solution has two parts that we would like to ideally combine, apply
       - The time elapsed in creating the clusters
       - Each line follow is a printout of two values that are similar based on their Levenshtein distance. If their Levenshtein distance is from 0.75-1.0, it is listed as a possible duplicate along with their Levenshtein distance.
    
-This solution is a more tested one, while it is currently only usable to check duplicate names. This solution is best implemented for the following types of duplicates:
+This solution is a more tested one, although it is currently only usable to check duplicate names. This solution is best implemented for the following types of duplicates:
    - misspelled name errors, which could be harder for cosine to find
    - other minor character differences
    - Metaphone also does well with differences such as "john" and "ajohn", as it can start with different letters but be sorted similarly based on the pronounciation of the rest of the word.
