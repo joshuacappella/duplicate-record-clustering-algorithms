@@ -18,15 +18,21 @@ The current solution sorts each relevant attribute (optimized with an index). Th
 
 ## Solutions that Have been Attempted and Deadended
    In our attempts to find efficient clustering and/or sorting algorithms, we have tried and failed the following approaches:
- - The previous teams solution, using MinHash and Clusters based on a particular Python library. We decided this approach was too poorly documented to be built off of and could be done better.
+ - The previous teams solution, using MinHash and Clusters based on a MinHash library. We realized this approach had some limitations could be done better.
  - Simple vector sorting: Due to the impossibility of properly sorting vectors by elements within the vector, since no one element is *seemingly* more important than another. Thus, the concept of sorting by vector elements and keeping the sliding window approach is unfeasible.
+  ### Soundex 
+  Soundex is a phonetic algorithm that encodes words based on their pronunciation, helping to identify similar-sounding names despite differences in spelling.  
+  It is useful in duplicate detection by grouping names with similar phonetic representations, reducing the number of comparisons needed.  
+  In this project, Soundex is used to cluster records with similar-sounding attributes, improving the efficiency of duplicate detection in Kardia_DB. It ultimately 
+  didn't satisfy the scope of this project because minor typos can lead to incorrect matches– (e.g., "Pohn" instead of "John") may result in different codes, hence 
+  the implemetation of Metaphone which has more adequate funtionality for this project.  
 
 ## Sliding Window
    The sliding window is essentially the way that the cosine algorithm checks for duplicates. The concept will continue to be used for this step of duplicate checking. The sliding window checks a number of sorted records below it for each record (e.g. a window of 50 records) by using the cosine algorithm and presents it as a duplicate if the cosine value is close enough to 1.0 (identical)
 
 ## Proposed Solution
 Our proposed solution has two parts that we would like to ideally combine, applying one of these functions to each attribute we desire to check. 
-   1. The file in the GitHub titled `kmeans.c` is our first proposed clustering solution. It utilizes functionality implemented by the current cosine checking solution within the sliding window of vectors. The way this is improved is by using the K-means clustering algorithm to create centroids and vector points on a graph and cluster them based on which centroid point has the smallest distance from the point. Although not tested on values, an approach of this nature could be *more* helpful for the following types of duplicates:
+   1. The file in the GitHub titled `kmeans.c` is our first proposed clustering solution coded in C. It utilizes functionality implemented by the current cosine checking solution within the sliding window of vectors. The way this is improved is by using the K-means clustering algorithm to create centroids and vector points on a graph and cluster them based on which centroid point has the smallest distance from the point. Although not tested on values, an approach of this nature could be *more* helpful for the following types of duplicates:
          - Duplicates where names are different but phone numbers could be the same
          - Where the emails are the same or similar but the last name changed (marriage)
          -   Others where typical names are very unalike
