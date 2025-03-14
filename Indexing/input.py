@@ -6,6 +6,8 @@
 * PURPOSE: Implementation of the ability to insert, delete, and show items from the 
 * database. This goes along with soundex.py file, where our hopes are to check the
 * soundex of foreign characters. 
+* IMPORTANT: Before running the script, connect to the database with:
+  ssh -L 3306:localhost:3306  devel@10.5.193.178
 ---------------------------------------------------------------------------------- '''
 
 import mariadb      # Library for connecting to and modifying a MariaDB database. 
@@ -101,7 +103,8 @@ def delete(cursor, item, value):
 # p_given_name) selected. 
 def show_item(cursor, item):
   cursor.execute(f"""
-    SELECT {item} FROM p_partner;
+    SELECT {item}, p_partner_key FROM p_partner
+    ORDER BY s_date_created;
   """)
   
   data = cursor.fetchall()
@@ -114,9 +117,9 @@ def show_item(cursor, item):
 
 # CHOOSE OPERATIONS TO IMPLEMENT -----------------------------------------------------
 def main():
-  insert(mycursor, "p_given_name", "王大力")
-  #delete(mycursor, "p_given_name", "王大力")
-  show_item(mycursor, "p_given_name")
+  insert(mycursor, "p_preferred_name", "王大力")
+  delete(mycursor, "p_preferred_name", "王大力")
+  show_item(mycursor, "p_preferred_name")
 
 # Run Main ---------------------------------------------------------------------------
 if __name__=="__main__" :
