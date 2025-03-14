@@ -20,11 +20,12 @@ The current solution sorts each relevant attribute (optimized with an index). Th
    In our attempts to find efficient clustering and/or sorting algorithms, we have tried and failed the following approaches:
  - The previous teams solution, using MinHash and Clusters based on a MinHash library. We realized this approach had some limitations could be done better.
  - Simple vector sorting: Due to the impossibility of properly sorting vectors by elements within the vector, since no one element is *seemingly* more important than another. Thus, the concept of sorting by vector elements and keeping the sliding window approach is unfeasible.
-
-## Soundex 
-Soundex is a phonetic algorithm that encodes words based on their pronunciation, helping to identify similar-sounding names despite differences in spelling.  
-It is useful in duplicate detection by grouping names with similar phonetic representations, reducing the number of comparisons needed.  
-In this project, Soundex is used to cluster records with similar-sounding attributes, improving the efficiency of duplicate detection in Kardia_DB. It ultimately didn't satisfy the scope of this project because minor typos can lead to incorrect matches– (e.g., "Pohn" instead of "John") may result in different codes, hence the implemetation of Metaphone which has more adequate funtionality for this project.  
+  ### Soundex 
+  Soundex is a phonetic algorithm that encodes words based on their pronunciation, helping to identify similar-sounding names despite differences in spelling.  
+  It is useful in duplicate detection by grouping names with similar phonetic representations, reducing the number of comparisons needed.  
+  In this project, Soundex is used to cluster records with similar-sounding attributes, improving the efficiency of duplicate detection in Kardia_DB. It ultimately 
+  didn't satisfy the scope of this project because minor typos can lead to incorrect matches– (e.g., "Pohn" instead of "John") may result in different codes, hence 
+  the implemetation of Metaphone which has more adequate funtionality for this project.  
 
 ## Sliding Window
    The sliding window is essentially the way that the cosine algorithm checks for duplicates. The concept will continue to be used for this step of duplicate checking. The sliding window checks a number of sorted records below it for each record (e.g. a window of 50 records) by using the cosine algorithm and presents it as a duplicate if the cosine value is close enough to 1.0 (identical)
