@@ -1,6 +1,6 @@
 ''' ----------------------------------------------------------------------------------
 * FILE: cluster.py
-* AUTHOR: Cody Clair, Tim Hewale
+* AUTHOR: Cody Clair, Tim Hewale, Benjamin Small
 * DATE CREATED: 3/13/2025
 * LAST MODIFIED: 3/14/2025
 * PURPOSE: This script clusters data from a MariaDB database using the Metaphone 
