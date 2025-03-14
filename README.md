@@ -10,7 +10,7 @@
 We need to efficently detect possible duplocates which can be presented to the user for resolution. The cosine similarity algorithm is great for determining when two peices of text are similar.
 
 ## Naive, Ideal Solution
-For every record, we could go through each relevant attribute and cosine compare it to every other record to detect similar records which may be duplocates. While this solution *will* find each duplocate, it's very slow on a large amount of data (think milions of entries) because it has O(n<sup>2</sup>) complexity.
+For every record, we could go through each relevant attribute and cosine compare it to every other record to detect similar records which may be duplocates. While this solution *will* find each duplicate, it's very slow on a large amount of data (think milions of entries) because it has O(n<sup>2</sup>) complexity.
 
 ## Current Solution
 The current solution sorts each relevant attribute (optimized with an index). Then, for each entry, it compares that entry to the next few entries (usually 10). This solution is far faster, however, it misses many duplocates. For example, "John" and "JJohn" (an obvious typo) will sort far appart, and this duplocate will not be detected.
@@ -45,7 +45,7 @@ Our proposed solution has two parts that we would like to ideally combine, apply
       - The time elapsed in creating the clusters
       - Each line follow is a printout of two values that are similar based on their Levenshtein distance. If their Levenshtein distance is from 0.75-1.0, it is listed as a possible duplicate along with their Levenshtein distance.
    
-This solution is a more tested one, while it is currently only usable to check duplicate names. This solution is best implemented for the following types of duplicates:
+This solution is a more tested one, although it is currently only usable to check duplicate names. This solution is best implemented for the following types of duplicates:
    - misspelled name errors, which could be harder for cosine to find
    - other minor character differences
    - Metaphone also does well with differences such as "john" and "ajohn", as it can start with different letters but be sorted similarly based on the pronounciation of the rest of the word.
